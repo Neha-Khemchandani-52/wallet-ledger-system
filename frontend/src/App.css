@@ -1,0 +1,560 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@300;400;500;600&display=swap');
+
+/* ─── Tokens ─────────────────────────────────────────── */
+:root {
+  --bg:          #0a0c10;
+  --bg-panel:    #111318;
+  --bg-input:    #1a1d24;
+  --border:      #ffffff14;
+  --border-focus:#5b6af0;
+  --accent:      #5b6af0;
+  --accent-dim:  #5b6af018;
+  --success:     #22c77a;
+  --success-dim: #22c77a18;
+  --danger:      #ef5350;
+  --danger-dim:  #ef535018;
+  --warning:     #f59e0b;
+  --text-primary:   #f0f2f7;
+  --text-secondary: #8891a8;
+  --text-muted:     #4a5064;
+  --font-ui:    'Sora', sans-serif;
+  --font-mono:  'DM Mono', monospace;
+  --radius-sm:  6px;
+  --radius-md:  10px;
+  --radius-lg:  16px;
+  --shadow:     0 4px 24px rgba(0,0,0,.5);
+}
+
+/* ─── Reset ──────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-ui);
+  background: var(--bg);
+  color: var(--text-primary);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Grid background ────────────────────────────────── */
+.bg-grid {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(rgba(91,106,240,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(91,106,240,.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ─── Layout ─────────────────────────────────────────── */
+.app-root { position: relative; z-index: 1; min-height: 100vh; }
+
+.app-header {
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  backdrop-filter: blur(12px);
+  position: sticky; top: 0; z-index: 10;
+  background: rgba(10,12,16,.8);
+}
+.header-inner {
+  max-width: 1100px; width: 100%; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.logo-mark { display: flex; align-items: center; gap: 8px; }
+.logo-icon { font-size: 20px; color: var(--accent); }
+.logo-text {
+  font-family: var(--font-mono);
+  font-size: 15px; font-weight: 500;
+  letter-spacing: .04em;
+  color: var(--text-primary);
+}
+
+.app-main {
+  max-width: 1100px; margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+.hero-label {
+  font-size: 11px; font-weight: 500; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+/* ─── Top row ────────────────────────────────────────── */
+.top-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: start;
+  margin-bottom: 24px;
+}
+@media (max-width: 640px) {
+  .top-row { grid-template-columns: 1fr; }
+}
+
+/* ─── Dashboard grid ─────────────────────────────────── */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .dashboard-grid { grid-template-columns: 1fr; }
+}
+
+/* ─── Panel ──────────────────────────────────────────── */
+.panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.panel-header {
+  padding: 18px 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.panel-title {
+  font-size: 14px; font-weight: 500; color: var(--text-primary);
+}
+.panel-badge {
+  font-family: var(--font-mono);
+  font-size: 10px; color: var(--accent);
+  background: var(--accent-dim);
+  padding: 2px 8px; border-radius: 20px;
+}
+
+/* ─── Balance card ───────────────────────────────────── */
+.balance-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  min-width: 220px;
+}
+.balance-label {
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-muted); margin-bottom: 8px;
+}
+.balance-amount {
+  display: flex; align-items: baseline; gap: 6px;
+}
+.balance-currency {
+  font-family: var(--font-mono);
+  font-size: 13px; color: var(--text-secondary);
+}
+.balance-value {
+  font-family: var(--font-mono);
+  font-size: 32px; font-weight: 500; line-height: 1;
+  letter-spacing: -.02em;
+}
+.balance-account-id {
+  font-family: var(--font-mono);
+  font-size: 11px; color: var(--text-muted);
+  margin-top: 8px;
+}
+.text-success { color: var(--success); }
+.text-danger  { color: var(--danger); }
+.balance-skeleton {
+  height: 36px; border-radius: var(--radius-sm);
+  background: linear-gradient(90deg, var(--bg-input) 25%, #1e2230 50%, var(--bg-input) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+.balance-err-msg { font-size: 13px; color: var(--danger); margin-bottom: 8px; }
+
+/* ─── Account selector ───────────────────────────────── */
+.account-selector { display: flex; flex-direction: column; gap: 8px; }
+.field-hint {
+  font-size: 12px; color: var(--text-muted);
+}
+.field-error  { color: var(--danger) !important; }
+.field-success{ color: var(--success) !important; }
+
+/* ─── Forms ──────────────────────────────────────────── */
+.transfer-form { padding: 0 20px 20px; display: flex; flex-direction: column; gap: 16px; }
+.form-field { display: flex; flex-direction: column; gap: 6px; }
+.field-label {
+  font-size: 12px; font-weight: 500; letter-spacing: .04em;
+  color: var(--text-secondary);
+}
+.required { color: var(--danger); }
+.field-row { display: flex; gap: 8px; }
+.input-text, .input-select {
+  width: 100%; background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: var(--font-ui); font-size: 14px;
+  padding: 10px 12px;
+  outline: none;
+  transition: border-color .15s;
+  appearance: none;
+}
+.input-text::placeholder { color: var(--text-muted); }
+.input-text:focus, .input-select:focus { border-color: var(--border-focus); }
+.input-disabled { opacity: .5; cursor: not-allowed; }
+.input-prefix-wrap { position: relative; display: flex; align-items: center; }
+.input-prefix {
+  position: absolute; left: 12px;
+  font-family: var(--font-mono); font-size: 14px;
+  color: var(--text-muted); pointer-events: none;
+}
+.input-with-prefix { padding-left: 26px; }
+
+/* ─── Buttons ────────────────────────────────────────── */
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border: none; border-radius: var(--radius-sm);
+  font-family: var(--font-ui); font-size: 14px; font-weight: 500;
+  padding: 10px 18px; cursor: pointer;
+  transition: opacity .15s, transform .1s;
+  white-space: nowrap;
+}
+.btn-primary:hover:not(:disabled) { opacity: .88; }
+.btn-primary:active:not(:disabled) { transform: scale(.98); }
+.btn-primary:disabled { opacity: .4; cursor: not-allowed; }
+.btn-full { width: 100%; }
+
+.btn-ghost {
+  background: var(--success);
+  color: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-ui); font-size: 14px;
+  padding: 8px 14px; cursor: pointer;
+  transition: border-color .15s, color .15s;
+}
+.btn-ghost:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.btn-ghost:disabled { opacity: .4; cursor: not-allowed; }
+.btn-sm { font-size: 12px; padding: 5px 10px; }
+
+.btn-loading { display: flex; align-items: center; justify-content: center; gap: 8px; }
+.spinner {
+  width: 14px; height: 14px;
+  border: 2px solid rgba(255,255,255,.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+
+/* ─── Transfer note ──────────────────────────────────── */
+.transfer-note {
+  font-size: 11px; color: var(--text-muted);
+  text-align: center; line-height: 1.5;
+}
+
+/* ─── Alerts ─────────────────────────────────────────── */
+.form-error {
+  background: var(--danger-dim); border: 1px solid var(--danger);
+  color: var(--danger); border-radius: var(--radius-sm);
+  padding: 9px 12px; font-size: 13px;
+}
+.form-success {
+  background: var(--success-dim); border: 1px solid var(--success);
+  color: var(--success); border-radius: var(--radius-sm);
+  padding: 9px 12px; font-size: 13px;
+}
+
+/* ─── Transaction list ───────────────────────────────── */
+.txn-list { display: flex; flex-direction: column; }
+.txn-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  transition: background .1s;
+}
+.txn-row:last-of-type { border-bottom: none; }
+.txn-row:hover { background: rgba(255,255,255,.02); }
+
+.txn-icon {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 500; flex-shrink: 0;
+}
+.txn-credit .txn-icon { background: var(--success-dim); color: var(--success); }
+.txn-debit  .txn-icon { background: var(--danger-dim);  color: var(--danger); }
+
+.txn-meta { flex: 1; min-width: 0; }
+.txn-type {
+  font-size: 13px; font-weight: 500;
+  color: var(--text-primary);
+}
+.txn-credit .txn-type { color: var(--success); }
+.txn-debit  .txn-type { color: var(--danger); }
+.txn-id {
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--text-muted); white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.txn-date { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+.txn-amount {
+  font-family: var(--font-mono);
+  font-size: 15px; font-weight: 500;
+  flex-shrink: 0;
+}
+.amount-credit { color: var(--success); }
+.amount-debit  { color: var(--danger); }
+
+.txn-skeleton {
+  height: 60px; margin: 0 20px 1px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(90deg, var(--bg-input) 25%, #1e2230 50%, var(--bg-input) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+.txn-empty {
+  padding: 48px 20px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+.txn-empty-icon { font-size: 28px; margin-bottom: 10px; color: var(--text-muted); }
+.txn-error { padding: 20px; color: var(--danger); font-size: 13px; }
+
+.txn-pagination {
+  display: flex; align-items: center; justify-content: center;
+  gap: 12px; padding: 14px 20px;
+  border-top: 1px solid var(--border);
+}
+.page-info { font-size: 12px; color: var(--text-muted); }
+
+/* ─── Empty state ────────────────────────────────────── */
+.empty-state {
+  text-align: center; padding: 80px 20px;
+  color: var(--text-muted); font-size: 14px;
+}
+.empty-icon { font-size: 36px; color: var(--border-focus); opacity: .3; margin-bottom: 16px; }
+
+/* ─── Modal ──────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.7); backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 100; padding: 16px;
+}
+.modal-box {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  width: 100%; max-width: 400px;
+  display: flex; flex-direction: column; gap: 16px;
+  box-shadow: var(--shadow);
+}
+.modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.modal-header h3 { font-size: 15px; font-weight: 500; }
+.modal-close {
+  background: none; border: none; color: var(--text-muted);
+  font-size: 16px; cursor: pointer;
+}
+.modal-actions {
+  display: flex; justify-content: flex-end; gap: 8px; margin-top: 4px;
+}
+
+/* ─── Animations ─────────────────────────────────────── */
+@keyframes shimmer {
+  to { background-position: -200% 0; }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.panel { animation: fadeIn .3s ease both; }
+.balance-card { animation: fadeIn .25s ease both; }
+
+/* ─── Deposit / Add Money ────────────────────────────── */
+.balance-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.btn-add-money {
+  background: transparent;
+  border: 1px solid var(--success);
+  color: var(--success);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+  letter-spacing: .02em;
+}
+.btn-add-money:hover {
+  background: var(--success);
+  color: #fff;
+}
+
+/* Deposit modal specific styles */
+.deposit-account-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+}
+.deposit-account-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: .04em;
+}
+.deposit-account-id {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--success);
+}
+
+.btn-deposit {
+  background: var(--success);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 18px;
+  cursor: pointer;
+  transition: opacity .15s, transform .1s;
+}
+.btn-deposit:hover:not(:disabled) { opacity: .88; }
+.btn-deposit:active:not(:disabled) { transform: scale(.98); }
+.btn-deposit:disabled { opacity: .4; cursor: not-allowed; }
+
+.btn-ghost-outline {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: border-color .15s, color .15s;
+}
+.btn-ghost-outline:hover:not(:disabled) {
+  border-color: var(--text-secondary);
+  color: var(--text-primary);
+}
+.btn-ghost-outline:disabled { opacity: .4; cursor: not-allowed; }
+
+/* ─── Header Create button  ──────────────────────────── */
+.btn-create {
+  background: var(--success);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: opacity .15s;
+}
+.btn-create:hover { opacity: .88; }
+
+/* ─── Refined dark theme tweaks ──────────────────────── */
+/* Stronger panel border on hover for depth */
+.panel { transition: border-color .2s; }
+.panel:hover { border-color: rgba(255,255,255,.12); }
+
+/* Better select arrow */
+.input-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238891a8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+
+/* Subtle left accent on transfer panel */
+.panel-transfer { border-left: 3px solid var(--accent); }
+/* Subtle left accent on history panel */
+.panel-history  { border-left: 3px solid rgba(91,106,240,.3); }
+
+/* field-optional style */
+.field-optional { color: var(--text-muted); font-size: 11px; font-weight: 400; margin-left: 4px; }
+
+/* ─── Account Not Found Card ─────────────────────────── */
+.not-found-card {
+  max-width: 480px;
+  margin: 48px auto;
+  background: var(--bg-panel);
+  border: 1px solid var(--danger);
+  border-radius: var(--radius-lg);
+  padding: 36px 32px;
+  text-align: center;
+  box-shadow: 0 0 32px rgba(239,83,80,.08);
+  animation: fadeIn .3s ease both;
+}
+
+.not-found-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--danger-dim);
+  border: 1.5px solid var(--danger);
+  color: var(--danger);
+  font-size: 20px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.not-found-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.not-found-id {
+  color: var(--danger);
+  font-family: var(--font-mono);
+  font-size: 15px;
+}
+
+.not-found-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+.not-found-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.not-found-or {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+
+.not-found-hint {
+  font-size: 12px;
+  color: var(--text-secondary);
+}

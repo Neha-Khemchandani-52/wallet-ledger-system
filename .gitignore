@@ -1,0 +1,25 @@
+# Env
+.env
+.env.*
+frontend/.env
+backend/.env
+
+# Node
+node_modules/
+frontend/node_modules/
+
+# Laravel
+vendor/
+backend/vendor/
+storage/
+bootstrap/cache/
+
+# Build
+dist/
+dist-ssr/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
