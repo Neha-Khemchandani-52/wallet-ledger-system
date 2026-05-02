@@ -5,7 +5,7 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "X-API-KEY": import.meta.env.VITE_API_KEY || "demo-testing-token-123"
+    "X-API-KEY": import.meta.env.VITE_API_KEY || "demo-testing-token-123" // non-senstive dummy token for testing only
   },
   timeout: 10000,
 });

@@ -23,3 +23,4 @@ database/*.sqlite
 Homestead.json
 Homestead.yaml
 Thumbs.db
+!.env.example
