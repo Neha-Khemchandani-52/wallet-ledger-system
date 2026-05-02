@@ -94,7 +94,8 @@ cp .env.example .env
 ## Copy `.env.example` to `.env` and update values before running the app.
 
 # Set VITE_API_URL=http://localhost:8000/api/v1
-# Set VITE_API_KEY=secret-token-here(dummy token is given in backend/.env.example file for testing that you can use as it is in .env for testing wallet-ledger-system app, because it's not sensitive one, that's why added in .env.example file)  ← must match backend API_TOKEN
+
+# Set VITE_API_KEY=secret-token-here (dummy token is given in backend/.env.example file for testing that you can use as it is in .env for testing wallet-ledger-system app, because it's not sensitive one, that's why added in .env.example file)  ← must match backend API_TOKEN
 
 # Start dev server
 npm run dev
