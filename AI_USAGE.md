@@ -1,6 +1,6 @@
 # AI Usage Disclosure
 
-> As required by the assignment: full transparency on AI tool usage,
+> As required by the assignment: Full transparency on AI tool usage,
 > prompts used, how AI helped, and my review/validation steps.
 
 ---
