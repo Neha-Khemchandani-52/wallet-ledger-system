@@ -57,7 +57,7 @@ wallet-ledger-system/
 ## 1. Clone Repository
 
 ```bash
-git clone https://github.com/your-username/wallet-ledger-system.git
+git clone https://github.com/Neha-Khemchandani-52/wallet-ledger-system.git
 cd wallet-ledger-system
 ```
 
@@ -123,7 +123,8 @@ npm install
 # Copy environment file
 cp .env.example .env
 ```
-## Note : Dummy token is given in backend/.env.example file for testing that you can use as it is in .env for testing wallet-ledger-system app, because it's not sensitive one, that's why added in .env.example file ← must match backend API_TOKEN
+
+> Note : Dummy token is given in backend/.env.example file for testing that you can use as it is in .env for testing wallet-ledger-system app, because it's not sensitive one, that's why added in .env.example file ← must match backend API_TOKEN
 
 ---
 
@@ -337,44 +338,37 @@ GET /accounts/{accountId}/transactions?page=1&per_page=10
 
 ---
 
-## Design Decisions
 
+##  Design Decisions
 
-Why Ledger Instead of Balance Column?
-    -Avoids inconsistency
-    -Ensures auditability
-    -Supports financial correctness
+### 1. Ledger-based balance
 
-Why UUID for Transactions?
-    -Enables idempotency
-    -Prevents duplicate processing
+* No balance column stored
+* Always derived from ledger
+* Ensures auditability
 
-Why DB Transactions?
-    -Guarantees atomic operations
+### 2. Atomic transfers
 
-Details : 
+* Implemented using `DB::transaction()`
+* Prevents partial updates
 
-### 1. Ledger-based balance (no stored balance column)
-Balance is always computed as `SUM(amount)` from `ledger_entries`. This means:
-- The ledger is an immutable audit trail — nothing is ever updated or deleted
-- Balance can never drift from the transaction history
+### 3. Row locking
 
-### 2. DECIMAL(19,4) for amounts
-`FLOAT` has binary rounding errors — in floating point. `DECIMAL(19,4)` stores exact decimal values, which is mandatory for financial data.
+* `lockForUpdate()` prevents race conditions
 
-### 3. Atomic transfers with DB::transaction() + lockForUpdate()
-Both the debit and credit ledger entries are written inside a single `DB::transaction()`. If anything fails, both are rolled back — money is never debited without being credited.
+### 4. Deadlock prevention
 
-`lockForUpdate()` acquires a row-level exclusive lock before reading balance, preventing two concurrent transfers from the same account both passing the balance check simultaneously (race condition / overdraft prevention).
+* Accounts locked in sorted order
 
-### 4. Deadlock prevention via consistent lock ordering
-When locking two accounts simultaneously, they are always locked in alphabetical order of `account_id`. This ensures A→B and B→A concurrent transfers acquire locks in the same order and cannot deadlock each other.
+### 5. Idempotency
 
-### 5. Client-side idempotency keys
-The React frontend generates a UUID before each transfer request. If the network drops after the server processes the transfer but before the response arrives, the client can safely retry with the same UUID — the server returns a 409 without creating a duplicate entry. The `UNIQUE(transaction_id, account_id)` database constraint provides a second layer of protection.
+* UUID-based transaction IDs
+* Prevents duplicate transfers
 
-### 6. API Token Middleware
-A static `X-API-KEY` header protects all endpoints. In production this would be replaced with Laravel Sanctum (per-user tokens), with account-level authorisation so users can only access their own accounts.
+### 6. Precision handling
+
+* `DECIMAL(19,4)` used instead of FLOAT
+
 
 ---
 ## Trade-offs
@@ -394,24 +388,26 @@ A static `X-API-KEY` header protects all endpoints. In production this would be 
 - `account_id` normalised to uppercase on creation (`strtoupper()`)
 
 ---
-## Assumptions
 
-Account ID is unique and alphanumeric
-Opening balance is optional (default: 0)
-Ledger is source of truth (no balance column)
-Currency assumed as USD
+##  Assumptions
+
+* Account ID is unique and alphanumeric
+* Opening balance is optional (default: 0)
+* Ledger is the single source of truth
+* Currency is fixed to USD
 
 ---
 
 ## Deployment (Optional)
-Backend: Railway
-Frontend: Vercel
+
+* Backend: Railway
+* Frontend: Vercel
 
 ---
 
-👩‍💻 Author
+## 👩‍💻 Author
 
-Neha Khemchandani
+**Neha Khemchandani**
 Senior Full-Stack Software Engineer
 
 
