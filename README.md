@@ -76,7 +76,7 @@ composer install
 cp .env.example .env
 ```
 
-> Update `.env` if needed (DB credentials & API token are pre-configured for local Docker setup)
+> Update `.env` if needed (DB credentials & API token are already pre-configured for Docker setup)
 
 > Note : Dummy token is given in .env.example file for testing that you can use as it is in .env for testing wallet-ledger-system app, because it's not sensitive one, that's why added in .env.example file.
 
@@ -88,21 +88,16 @@ cp .env.example .env
 ```bash
 docker-compose up -d --build
 docker ps
-docker ps
 ```
 
 ---
 
-##  4. Initialize Application with Docker Setup
 ##  4. Initialize Application 
 
 Imp Note : Since the application runs inside Docker, Artisan commands must be executed inside the container.
-Imp Note : Since the application runs inside Docker, Artisan commands must be executed inside the container.
+
 
 ```bash
-## Docker command for moving inside Docker container
-docker-compose exec app bash
-
 ## Docker command for moving inside Docker container
 docker-compose exec app bash
 
@@ -112,16 +107,11 @@ php artisan key:generate
 ### First Time Setup, If you encounter cache/session/view errors, run:
 
 mkdir -p storage/framework/{cache,sessions,views}
-mkdir -p bootstrap/cache
-chmod -R 775 storage bootstrap/cache
-php artisan optimize:clear
-php artisan key:generate
 
-### First Time Setup, If you encounter cache/session/view errors, run:
-
-mkdir -p storage/framework/{cache,sessions,views}
 mkdir -p bootstrap/cache
+
 chmod -R 775 storage bootstrap/cache
+
 php artisan optimize:clear
 
 # Run migrations
@@ -129,12 +119,7 @@ php artisan migrate
 
 # Seed test data
 php artisan migrate --seed
-php artisan migrate
 
-# Seed test data
-php artisan migrate --seed
-
-php artisan serve
 php artisan serve
 ```
 
@@ -154,9 +139,6 @@ http://localhost:8000
 # Open new terminal window
 cd wallet-ledger-system
 cd frontend
-# Open new terminal window
-cd wallet-ledger-system
-cd frontend
 
 # Install dependencies
 npm install
@@ -168,9 +150,7 @@ cp .env.example .env
 ---
 
 ### Configure Frontend Environment
-### Configure Frontend Environment
 
-Inside `.env` file :
 Inside `.env` file :
 
 ```env
@@ -179,7 +159,7 @@ VITE_API_KEY=secret-token-here
 ```
 
 > `VITE_API_KEY` must match with `API_TOKEN` in backend `.env`
-> `VITE_API_KEY` must match with `API_TOKEN` in backend `.env`
+
 
 ---
 
@@ -190,10 +170,6 @@ npm run dev
 ```
 
 Frontend runs at: http://localhost:5173
-
-
-
----
 
 
 ---
@@ -211,7 +187,7 @@ Base URL: `http://localhost:8000/api/v1`
 ---
 
 ### 1. List all accounts in select dropdown
-### 1. List all accounts in select dropdown
+
 ```
 GET /accounts
 ```
@@ -224,7 +200,6 @@ GET /accounts
   ]
 }
 ```
-![alt text](image-5.png)
 ![alt text](image-5.png)
 ---
 
@@ -262,9 +237,7 @@ POST /accounts
 ![alt text](image-3.png)
 
 ![alt text](image-4.png)
-![alt text](image-3.png)
 
-![alt text](image-4.png)
 ---
 
 ### 3. Get Balance
@@ -287,9 +260,6 @@ GET /accounts/{accountId}/balance
 
 ![alt text](image-6.png)
 
----
-
-![alt text](image-6.png)
 
 ---
 
@@ -326,8 +296,6 @@ Status | 422    | Insufficient funds / invalid accounts / validation failure |
 
 ![alt text](image-2.png)
 
-![alt text](image-2.png)
-
 ---
 
 ### 5. Deposit Funds
@@ -350,7 +318,6 @@ POST /accounts/{accountId}/deposit
 
 ![alt text](image.png)
 
-![alt text](image.png)
 ---
 
 ### 6. Transaction History
@@ -379,8 +346,9 @@ GET /accounts/{accountId}/transactions?page=1&per_page=10
   }
 }
 ```
+
 ![alt text](image-1.png)
-![alt text](image-1.png)
+
 ---
 
 
