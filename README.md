@@ -1,4 +1,4 @@
-## wallet-ledger-system
+# wallet-ledger-system
 A full-stack financial system built with Laravel (backend), React (frontend), and MySQL (database). Implements account management, atomic money transfers, deposit functionality, and transaction history with a ledger-based architecture.
 
 ---
@@ -39,6 +39,8 @@ wallet-ledger-system/
   
 └── README.md
 
+└── AI_USAGE.md
+
 
 ---
 
@@ -77,7 +79,7 @@ cp .env.example .env
 
 > Update `.env` if needed (DB credentials & API token are pre-configured for local Docker setup)
 
-Note : Dummy token is given in .env.example file for testing that you can use as it is in .env for testing wallet-ledger-system app, because it's not sensitive one, that's why added in .env.example file.
+> Note : Dummy token is given in .env.example file for testing that you can use as it is in .env for testing wallet-ledger-system app, because it's not sensitive one, that's why added in .env.example file.
 
 ---
 
@@ -408,6 +410,7 @@ GET /accounts/{accountId}/transactions?page=1&per_page=10
 ## 👩‍💻 Author
 
 **Neha Khemchandani**
-Senior Full-Stack Software Engineer
+
+Senior Full-Stack Engineer
 
 
