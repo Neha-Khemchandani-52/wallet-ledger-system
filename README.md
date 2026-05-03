@@ -144,38 +144,6 @@ php artisan serve
 
 http://localhost:8000
 
----
-
-
-##  Alternative Setup for Backend (Without Docker)
-
-**Imp Note** : For non-Docker setup, update DB_HOST to 127.0.0.1 instead of 'db'
-
-If Docker is not available, then:
-
-### Backend
-
-```bash
-cd backend
-
-composer install
-
-cp .env.example .env
-
-php artisan key:generate
-
-php artisan migrate --seed
-
-mkdir -p storage/framework/{cache,sessions,views}
-
-mkdir -p bootstrap/cache
-
-chmod -R 775 storage bootstrap/cache
-
-php artisan optimize:clear
-
-php artisan serve
-```
 
 
 ---
