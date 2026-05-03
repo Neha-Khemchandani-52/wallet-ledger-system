@@ -1,8 +1,8 @@
-# wallet-ledger-system
+## wallet-ledger-system
 A full-stack financial system built with Laravel (backend), React (frontend), and MySQL (database). Implements account management, atomic money transfers, deposit functionality, and transaction history with a ledger-based architecture.
 
 ---
-# Features
+## Features
 - Create Account with Opening Balance
 - Deposit Money (Ledger-based credit entry)
 - Transfer Funds (Atomic & Idempotent)
@@ -13,7 +13,7 @@ A full-stack financial system built with Laravel (backend), React (frontend), an
 - Dockerized Setup (PHP, MySQL, Nginx)
 
 ---
-# Tech Stack
+## Tech Stack
 Backend:
 - Laravel 12+
 - MySQL 8
@@ -28,81 +28,156 @@ DevOps:
 - Docker + Docker Compose
 
 ---
-## Project Structute
+
+## Project Structure
 
 wallet-ledger-system/
-│
-├── backend/ → Laravel API
-├── frontend/ → React UI
+
+├── backend/ 
+   
+├── frontend/
+  
 └── README.md
 
+
 ---
+
 ## Setup Instructions
 
-### Prerequisites
-- PHP >= 8.2, Composer
-- Node.js >= 18, npm
-- MySQL 8
+---
 
-### Clone Repository
+##  Prerequisites
+
+* PHP >= 8.2, Composer
+* Node.js >= 18, npm
+* Docker & Docker Compose
+
+---
+
+## 1. Clone Repository
 
 ```bash
 git clone https://github.com/your-username/wallet-ledger-system.git
 cd wallet-ledger-system
+```
 
-### Backend Setup(PHP Laravel)
+---
+
+##  2. Backend Setup (Laravel)
+
+```bash
 cd backend
 
 # Install dependencies
 composer install
 
-# Copy env
+# Copy environment file
 cp .env.example .env
+```
 
-# Generate app key
-php artisan key:generate
+> Update `.env` if needed (DB credentials & API token are pre-configured for local Docker setup)
 
-# Setup DB (update .env accordingly)
+Note : Dummy token is given in .env.example file for testing that you can use as it is in .env for testing wallet-ledger-system app, because it's not sensitive one, that's why added in .env.example file.
 
-# Set API token in .env
-# API_TOKEN=secret-token-here (dummy token is given in .env.example file for testing that you can use as it is in .env for testing wallet-ledger-system app, because it's not sensitive one, that's why added in .env.example file)
+---
 
-# Run migrations
-php artisan migrate
+##  3. Start Docker Containers
 
-# Run migrations and seed test data
-php artisan migrate --seed
-
-# Start the server
-php artisan serve
-# Backend runs at: http://localhost:8000
+```bash
+docker-compose up -d --build
 ```
 
 ---
 
-### Frontend Setup
+##  4. Initialize Application
+
+Since the application runs inside Docker, Artisan commands must be executed inside the container.
 
 ```bash
-cd frontend
+# Generate application key
+docker-compose exec app php artisan key:generate
+
+# Run migrations
+docker-compose exec app php artisan migrate
+
+# (Optional) Seed test data
+docker-compose exec app php artisan migrate --seed
+```
+
+---
+
+##  Backend Access
+
+http://localhost:8000
+
+---
+
+## 5. Frontend Setup (React)
+
+```bash
+cd ../frontend
 
 # Install dependencies
 npm install
 
-# Configure environment
+# Copy environment file
 cp .env.example .env
-
-## Copy `.env.example` to `.env` and update values before running the app.
-
-# Set VITE_API_URL=http://localhost:8000/api/v1
-
-# Set VITE_API_KEY=secret-token-here (dummy token is given in backend/.env.example file for testing that you can use as it is in .env for testing wallet-ledger-system app, because it's not sensitive one, that's why added in .env.example file)  ← must match backend API_TOKEN
-
-# Start dev server
-npm run dev
-# Frontend runs on: http://localhost:5173
 ```
+## Note : Dummy token is given in backend/.env.example file for testing that you can use as it is in .env for testing wallet-ledger-system app, because it's not sensitive one, that's why added in .env.example file ← must match backend API_TOKEN
 
 ---
+
+## Configure Frontend Environment
+
+Update `.env`:
+
+```env
+VITE_API_URL=http://localhost:8000/api/v1
+VITE_API_KEY=secret-token-here
+```
+
+> Must match `API_TOKEN` in backend `.env`
+
+---
+
+## Start Frontend
+
+```bash
+npm run dev
+```
+
+Frontend runs at: http://localhost:5173
+
+---
+
+##  Alternative (Without Docker)
+
+## Note : For non-Docker setup, update DB_HOST to 127.0.0.1 instead of 'db'
+
+If Docker is not available:
+
+### Backend
+
+```bash
+cd backend
+
+composer install
+cp .env.example .env
+
+php artisan key:generate
+php artisan migrate --seed
+php artisan serve
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+
 ## API Documentation
 
 All endpoints require the header:
@@ -213,6 +288,7 @@ Status | 409  | Duplicate `transaction_id` — already processed |
 Status | 422    | Insufficient funds / invalid accounts / validation failure |
 
 ---
+
 ### 5. Deposit Funds
 ```
 POST /accounts/{accountId}/deposit
@@ -231,6 +307,7 @@ POST /accounts/{accountId}/deposit
 }
 ```
 ---
+
 ### 6. Transaction History
 ```
 GET /accounts/{accountId}/transactions?page=1&per_page=10
@@ -262,7 +339,6 @@ GET /accounts/{accountId}/transactions?page=1&per_page=10
 
 ## Design Decisions
 
-Brief :
 
 Why Ledger Instead of Balance Column?
     -Avoids inconsistency
@@ -319,23 +395,22 @@ A static `X-API-KEY` header protects all endpoints. In production this would be 
 
 ---
 ## Assumptions
+
 Account ID is unique and alphanumeric
 Opening balance is optional (default: 0)
 Ledger is source of truth (no balance column)
 Currency assumed as USD
 
 ---
-## Docker Setup (Bonus) 
-cd backend
-docker-compose up -d
 
----
 ## Deployment (Optional)
 Backend: Railway
 Frontend: Vercel
 
 ---
-## Author
+
+👩‍💻 Author
+
 Neha Khemchandani
 Senior Full-Stack Software Engineer
 
