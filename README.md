@@ -104,21 +104,26 @@ docker-compose exec app bash
 # Generate application key
 php artisan key:generate
 
-### First Time Setup, If you encounter cache/session/view errors, run:
-
-mkdir -p storage/framework/{cache,sessions,views}
-
-mkdir -p bootstrap/cache
-
-chmod -R 775 storage bootstrap/cache
-
-php artisan optimize:clear
-
 # Run migrations
 php artisan migrate
 
 # Seed test data
 php artisan migrate --seed
+
+php artisan optimize:clear
+
+## First Time Setup, In case after running `php artisan optimize:clear` If you encounter any cache/session/view errors, then run below 3 commands to create directories :
+
+# i.
+mkdir -p storage/framework/{cache,sessions,views}
+
+# ii.
+mkdir -p bootstrap/cache
+
+# iii.
+chmod -R 775 storage bootstrap/cache
+
+php artisan optimize:clear
 
 php artisan serve
 ```
