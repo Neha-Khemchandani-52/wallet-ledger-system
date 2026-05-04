@@ -1,7 +1,7 @@
 # Mini Wallet & Ledger System
 A full-stack financial system built with Laravel (backend), React (frontend), and MySQL (database). Implements account management, atomic money transfers, deposit functionality, and transaction history with a ledger-based architecture.
 
-## 🚀 Live Demo
+## Live Demo
 
 | | URL |
 |---|---|
@@ -9,10 +9,7 @@ A full-stack financial system built with Laravel (backend), React (frontend), an
 | **Backend API** | http://52.66.32.200:8000/api/v1 |
 
 
-> **Test accounts available:** ACC001, ACC002, ACC003 (seeded with opening balances)
-> 
-> API requires header: `X-API-KEY: your-token`
-
+> **Test accounts available:** ACC001, ACC002, ACC003,etc (seeded with opening balances)
 
 
 ---
