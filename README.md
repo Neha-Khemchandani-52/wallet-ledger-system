@@ -1,5 +1,19 @@
-# wallet-ledger-system
+# Mini Wallet & Ledger System
 A full-stack financial system built with Laravel (backend), React (frontend), and MySQL (database). Implements account management, atomic money transfers, deposit functionality, and transaction history with a ledger-based architecture.
+
+## 🚀 Live Demo
+
+| | URL |
+|---|---|
+| **Frontend App** | http://wallet-ledger-frontend-bucket.s3-website.ap-south-1.amazonaws.com |
+| **Backend API** | http://52.66.32.200:8000/api/v1 |
+
+
+> **Test accounts available:** ACC001, ACC002, ACC003 (seeded with opening balances)
+> 
+> API requires header: `X-API-KEY: your-token`
+
+
 
 ---
 ## Features
@@ -413,6 +427,18 @@ GET /accounts/{accountId}/transactions?page=1&per_page=10
 * Opening balance is optional (default: 0)
 * Ledger is the single source of truth
 * Currency is fixed to USD
+
+## Deployment (Optional)
+
+**Frontend (Live):** http://wallet-ledger-frontend-bucket.s3-website.ap-south-1.amazonaws.com
+
+**Backend API (Live):** http://52.66.32.200:8000/api/v1
+
+### Infrastructure
+* Backend deployed on **AWS EC2** (Ubuntu 24.04) using **Docker Compose**
+  * Containers: PHP 8.2 + Laravel, Nginx, MySQL 8.0
+* Frontend deployed on **AWS S3** static website hosting
+* CORS configured to allow S3 frontend → EC2 backend communication
 
 
 ---
