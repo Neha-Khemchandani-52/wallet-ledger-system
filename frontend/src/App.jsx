@@ -22,14 +22,15 @@ export default function App() {
 function WalletApp() {
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [accountValid, setAccountValid]       = useState(false);
+  const [accountLoading, setAccountLoading]   = useState(false);
   const [showCreate, setShowCreate]           = useState(false);
 
   const handleSelectAccount = (acc) => {
     setSelectedAccount(acc);
     setAccountValid(false);
+    setAccountLoading(true);
   };
 
-  // Invalidate both balance and transactions after deposit
   const handleDepositSuccess = () => {
     queryClient.invalidateQueries({ queryKey: ['balance'] });
     queryClient.invalidateQueries({ queryKey: ['transactions'] });
@@ -45,7 +46,7 @@ function WalletApp() {
         <div className="header-inner">
           <div className="logo-mark">
             <span className="logo-icon">◈</span>
-            <span className="logo-text">Mini Wallet & Ledger System</span>
+            <span className="logo-text">Mini Wallet &amp; Ledger System</span>
           </div>
           <button className="btn-create" onClick={() => setShowCreate(true)}>
             + Create Account
@@ -64,14 +65,25 @@ function WalletApp() {
           {accountId && (
             <BalanceDisplay
               accountId={accountId}
-              onAccountValid={setAccountValid}
+              onAccountValid={(valid) => {
+                setAccountValid(valid);
+                setAccountLoading(false);
+              }}
               onDepositSuccess={handleDepositSuccess}
             />
           )}
         </div>
 
-        {/* Dashboard — only when account confirmed valid */}
-        {accountId && accountValid && (
+        {accountId && accountLoading && (
+          <div className="empty-state">
+            <div className="loading-spinner" />
+            <p style={{ color: 'var(--text-muted)', fontSize: 13, marginTop: 16 }}>
+              Loading account…
+            </p>
+          </div>
+        )}
+
+        {accountId && !accountLoading && accountValid && (
           <div className="dashboard-grid">
             <div className="panel panel-transfer">
               <div className="panel-header">
@@ -96,8 +108,7 @@ function WalletApp() {
           </div>
         )}
 
-        {/* Account typed but not found */}
-        {accountId && !accountValid && (
+        {accountId && !accountLoading && !accountValid && (
           <div className="not-found-card">
             <div className="not-found-icon">✕</div>
             <div className="not-found-title">
@@ -111,12 +122,14 @@ function WalletApp() {
                 + Create this Account
               </button>
               <span className="not-found-or">or</span>
-              <span className="not-found-hint">select an existing account from the dropdown above</span>
+              <span className="not-found-hint">
+                select an existing account from the dropdown above
+              </span>
             </div>
           </div>
         )}
 
-        {/* No account selected */}
+        {/* No Account selected yet */}
         {!accountId && (
           <div className="empty-state">
             <div className="empty-icon">◈</div>
@@ -132,6 +145,7 @@ function WalletApp() {
             queryClient.invalidateQueries({ queryKey: ['accounts'] });
             setSelectedAccount(acc);
             setAccountValid(true);
+            setAccountLoading(false);
             setShowCreate(false);
           }}
         />
